@@ -12,8 +12,9 @@ Ad esempio le prime 5 righe del file:
 3
 4 136 162 76
 ```
-
 vanno lette in questa maniera: il paziente 0 non ha contagiato nessuno, il paziente 1 ha contagiato i pazienti 184, 121, 114, 53 e così via...
+
+La diffusione della malattia è rappresentabile tramite in **grafo orientato** in cui i nodi sono i contagiati e gli archi rappresentano i contagi.
 
 Scrivere un programma python3 che legga il file data.txt. Per chi non si ricordasse come leggere i file ecco uno snippet di codice:
 ```python
