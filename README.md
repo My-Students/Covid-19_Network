@@ -28,3 +28,4 @@ data.close()
 1. Il programma deve costruire il dizionario delle adiacenze che corrisponde al grafo del contagio.
 2. Usando le funzioni sviluppate nelle precedenti esercitazioni, creare la matrice di adiacenza.
 3. Trovare i pazienti 0 (per usare un termine tanto in voga tra i media), ovvero coloro dai quali è partito il contagio!
+4. Caricate il vostro programma in questa [directory](https://github.com/My-Students/Covid-19_Network/tree/master/Covid-19_solutions)
