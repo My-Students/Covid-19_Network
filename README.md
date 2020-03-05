@@ -12,7 +12,7 @@ Ad esempio le prime 5 righe del file:
 3
 4 136 162 76
 ```
-vanno lette in questa maniera: il paziente 0 non ha contagiato nessuno, il paziente 1 ha contagiato i pazienti 184, 121, 114, 53 e così via...
+vanno lette in questa maniera: il paziente numero 0 non ha contagiato nessuno, il paziente numero 1 ha contagiato i pazienti 184, 121, 114, 53 e così via...
 
 La diffusione della malattia è rappresentabile tramite in **grafo orientato** in cui i nodi sono i contagiati e gli archi rappresentano i contagi.
 
@@ -27,4 +27,4 @@ data.close()
 
 1. Il programma deve costruire il dizionario delle adiacenze che corrisponde al grafo del contagio.
 2. Usando le funzioni sviluppate nelle precedenti esercitazioni, creare la matrice di adiacenza.
-3. Trovare i pazienti 0, ovvero coloro dai quali è partito il contagio!
+3. Trovare i pazienti 0 (per usare un termine tanto in voga tra i media), ovvero coloro dai quali è partito il contagio!
