@@ -36,18 +36,20 @@ def paz0(matr):
     for i in range(0, len(matr)):
         troj = False
         portatore = False
+        '''
         for j in range(0, len(matr)):
             if matr[i][j] != 0:
                 portatore = True
-        if portatore:
-            k = 0
-            while (k < len(matr) and troj == False):
-                if matr[k][i] == 0 :
-                    k = k + 1
-                else:
-                    troj = True
-            if troj == False:
-                print(i)
+        '''
+        #if portatore:
+        k = 0
+        while (k < len(matr) and troj == False):
+            if matr[k][i] == 0 :
+                k = k + 1
+            else:
+                troj = True
+        if troj == False:
+            print(i)
         i+=1
         
 
