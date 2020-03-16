@@ -3,10 +3,13 @@
 # https://github.com/My-Students/Covid-19_Network
 
 from sys import argv
+import click
 
 # There are node that aren't infected by anyone and haven't infected anyone.
-# If they mustn't be considered patient 0, set the following flag to `False`
-SINGLENODEP0 = True
+# `False`: they mustn't be considered patient 0
+# `True`: they must be considered patient 0
+# This is a default value, can be overrided in methods call and cli options
+__SINGLENODEP0__ = False
 
 def data2addict(fname):
     """
@@ -41,13 +44,13 @@ def addict2admat(addict):
     return admat
 
 
-def addict2p0(addict, SINGLENODEP0=SINGLENODEP0):
+def addict2p0(addict, snp0=__SINGLENODEP0__):
     """
     Retrieve patients zero from an adj dict
     """
     """
     A patient, to be a patient 0, must:
-        - (if not SINGLENODEP0) have infected at least one other patient -> `len(addict[node]) > 0`
+        - (if not snp0) have infected at least one other patient -> `len(addict[node]) > 0`
         - can't be infected by any other patient
     hence we first build a list with every patient, then:
         for each patient:
@@ -58,7 +61,7 @@ def addict2p0(addict, SINGLENODEP0=SINGLENODEP0):
     p0 = [int(n) for n in addict.keys()]
 
     for node in addict:
-        neighb = addict[node] if len(addict[node]) > 0 else [node] if not SINGLENODEP0 else []
+        neighb = addict[node] if len(addict[node]) > 0 else [node] if not snp0 else []
         # p0 = [n for n in p0 if not n in neighb]
         p0 = list(set(p0) - set(neighb))
 
@@ -72,13 +75,13 @@ def rotateMat90(mat):
     return [list(el) for el in zip(*mat[::-1])]
 
 
-def admat2p0(admat, SINGLENODEP0=SINGLENODEP0):
+def admat2p0(admat, snp0=__SINGLENODEP0__):
     """
     Retrieve patients zero from an adj mat
     """
     """
     A patient, to be a patient 0, must:
-        - (if not SINGLENODEP0) have infected at least one other patient -> `sum(y = patient) > 0`
+        - (if not snp0) have infected at least one other patient -> `sum(y = patient) > 0`
         - can't be infected by any other patient -> `sum(x = patient) == 0`
 
     EG:
@@ -97,13 +100,16 @@ def admat2p0(admat, SINGLENODEP0=SINGLENODEP0):
     p0 = []
 
     for node, y in enumerate(admat):
-        if (sum(y) > 0 or SINGLENODEP0) and sum(mat90[node]) == 0:
+        if (sum(y) > 0 or snp0) and sum(mat90[node]) == 0:
             p0.append(node)
 
     return p0
 
-
-def test_methods(data):
+@click.command()
+@click.argument('data', type=click.Path(dir_okay=False))
+@click.option('--snp0', flag_value=True, is_flag=True,
+    help="Set node that aren't infected by anyone and haven't infected anyone as patients zero")
+def test_methods(data, snp0):
     """
     Test addict2p0 & admat2p0 with a given dataset
     """
@@ -111,8 +117,8 @@ def test_methods(data):
     addict = data2addict(data)
     admat = addict2admat(addict)
 
-    p0_dict = [el for el in addict2p0(addict)]
-    p0_mat = admat2p0(admat)
+    p0_dict = addict2p0(addict, snp0=snp0)
+    p0_mat = admat2p0(admat, snp0=snp0)
 
     print(f'Dict method: {p0_dict}')
     print(f'Mat method: {p0_mat}')
@@ -120,14 +126,5 @@ def test_methods(data):
     assert_equals = 'OK' if sorted(p0_dict) == sorted(p0_mat) else 'ERROR: not equals'
     print('Results given by two different methods should be equal: ' + assert_equals)
 
-
-usage = """
-ERROR: Wrong parameters number
-USAGE: $ python jomini.py data
-    - data: dataset path
-"""
-
 if __name__ == "__main__":
-
-    if not len(argv) == 2: print(usage)
-    else: test_methods(argv[1])
+    test_methods()
