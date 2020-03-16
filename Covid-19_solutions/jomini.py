@@ -4,6 +4,10 @@
 
 from sys import argv
 
+# There are node that aren't infected by anyone and haven't infected anyone.
+# If they must be considered patient 0, set the folowing flat to True
+SINGLENODEP0 = True
+
 def data2addict(fname):
     """
     Parse input data file into an adj dict
@@ -37,13 +41,13 @@ def addict2admat(addict):
     return admat
 
 
-def addict2p0(addict):
+def addict2p0(addict, SINGLENODEP0=SINGLENODEP0):
     """
     Retrieve patients zero from an adj dict
     """
     """
     A patient, to be a patient 0, must:
-        - have infected at least one other patient -> `len(addict[node]) > 0`
+        - (if not SINGLENODEP0) have infected at least one other patient -> `len(addict[node]) > 0`
         - can't be infected by any other patient
     hence we first build a list with every patient, then:
         for each patient:
@@ -54,7 +58,7 @@ def addict2p0(addict):
     p0 = [int(n) for n in addict.keys()]
 
     for node in addict:
-        neighb = addict[node] if len(addict[node]) > 0 else [node]
+        neighb = addict[node] if len(addict[node]) > 0 else [node] if not SINGLENODEP0 else []
         # p0 = [n for n in p0 if not n in neighb]
         p0 = list(set(p0) - set(neighb))
 
@@ -68,13 +72,13 @@ def rotateMat90(mat):
     return [list(el) for el in zip(*mat[::-1])]
 
 
-def admat2p0(admat):
+def admat2p0(admat, SINGLENODEP0=SINGLENODEP0):
     """
     Retrieve patients zero from an adj mat
     """
     """
     A patient, to be a patient 0, must:
-        - have infected at least one other patient -> `sum(y = patient) > 0`
+        - (if not SINGLENODEP0) have infected at least one other patient -> `sum(y = patient) > 0`
         - can't be infected by any other patient -> `sum(x = patient) == 0`
 
     EG:
@@ -93,7 +97,7 @@ def admat2p0(admat):
     p0 = []
 
     for node, y in enumerate(admat):
-        if sum(y) > 0 and sum(mat90[node]) == 0:
+        if (sum(y) > 0 or SINGLENODEP0) and sum(mat90[node]) == 0:
             p0.append(node)
 
     return p0
