@@ -5,7 +5,7 @@
 from sys import argv
 
 # There are node that aren't infected by anyone and haven't infected anyone.
-# If they must be considered patient 0, set the folowing flat to True
+# If they mustn't be considered patient 0, set the following flag to `False`
 SINGLENODEP0 = True
 
 def data2addict(fname):
