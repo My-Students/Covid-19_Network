@@ -19,7 +19,7 @@ def readFile(): #Lettura del file
 def dirtToMatrix(virFile):
     matrix = []
 
-    for key, value in dict.items():
+    for key, value in dict.items():  # Posiziono un "1" dove i due nodi si collegano
         matrix[key]
         for l in value:
             matrix[key][l] = 1
@@ -28,15 +28,15 @@ def dirtToMatrix(virFile):
 
 
 
-def pazZero(virMatrix):
+def pazZero(virMatrix):   # Cerca il paziente zero controllando la riga del paziente per vedere se è stato infetto da altro
     catturato = True
     list_Zero = []
     for r in len(virMatrix):
         for c in len(virMatrix):
             if(virMatrix[r][c]==0):
-                catturato = True
+                catturato = True 
             
-            if(catturato == True):
+            if(catturato == True): # le la riga del paziente è pulita, allora è il paziente zero
                 list_Zero.append(r)
     
     return list_Zero
